@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import helmet from "helmet";
 import morgan from "morgan";
 import cors from "cors";
+import productRoutes from "./routes/productRoutes.js";
 
 dotenv.config(); // Load environment variables from .env file
 const app = express();
@@ -16,6 +17,8 @@ app.use(morgan("dev")); // Logging middleware to log HTTP requests
 app.get("/", (req, res) => {
   res.send("Hello World from the ROOT route!");
 });
+
+app.use("/api/products", productRoutes); // Mount the product routes at /api/products
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}!`);
