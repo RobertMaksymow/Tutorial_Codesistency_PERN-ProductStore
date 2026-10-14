@@ -16,8 +16,10 @@ const useProductStore = create((set, get) => ({
     } catch (error) {
       if (error.status === 429) {
         set({
-          error: "Too many requests. Please try again later.",
+          error:
+            "Rate limit exceeded. Too many requests. Please try again later.",
           loading: false,
+          products: [],
         });
       } else {
         set({ error: error.message, loading: false });
