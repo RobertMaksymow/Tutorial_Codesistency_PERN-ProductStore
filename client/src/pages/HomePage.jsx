@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import useProductStore from "../store/useProductStore.js";
-import { PlusCircleIcon, RefreshCcw } from "lucide-react";
+import { PackageIcon, PlusCircleIcon, RefreshCcw } from "lucide-react";
 import ProductCard from "../components/ProductCard.jsx";
 
 const HomePage = () => {
@@ -30,6 +30,18 @@ const HomePage = () => {
       </div>
 
       {error && <div className="alert alert-error mb-8">Error: {error}</div>}
+
+      {products.length === 0 && !loading && !error && (
+        <div className="flex flex-col justify-center items-center h-96 space-y-4">
+          <div className="bg-base-100 rounded-full p-6">
+            <PackageIcon className="size-10 text-gray-400" />
+          </div>
+          <div className="text-gray-500 text-lg">No products available.</div>
+          <div className="text-gray-400 text-sm">
+            Click the "Add Product" button to create a new product.
+          </div>
+        </div>
+      )}
 
       {loading ? (
         <div className="flex justify-center items-center h-64">
