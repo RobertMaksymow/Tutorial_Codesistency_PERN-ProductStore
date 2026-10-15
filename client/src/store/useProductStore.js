@@ -9,6 +9,46 @@ const useProductStore = create((set, get) => ({
   loading: false,
   error: null,
 
+  formData: {
+    name: "",
+    description: "",
+    price: "",
+    image: "",
+  },
+
+  setFormData: (formData) => {
+    set({ formData });
+  },
+  resetFormData: () => {
+    set({
+      formData: {
+        name: "",
+        description: "",
+        price: "",
+        image: "",
+      },
+    });
+  },
+
+  addProduct: async (e) => {
+    e.preventDefault();
+    set({ loading: true });
+
+    try {
+      const { formData } = get();
+      await axios.post(`${BASE_URL}/api_v1/products`, formData);
+      await get().fetchProducts();
+      get().resetFormData();
+      document.getElementById("add_product_modal").closest();
+      toast.success("Product added successfully");
+    } catch (error) {
+      console.log("Error: ", error);
+      toast.error("Error while adding new product");
+    } finally {
+      set({ loading: false });
+    }
+  },
+
   fetchProducts: async () => {
     set({ loading: true, error: null });
     try {
