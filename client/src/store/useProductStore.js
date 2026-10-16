@@ -8,6 +8,7 @@ const useProductStore = create((set, get) => ({
   products: [],
   loading: false,
   error: null,
+  currentProduct: null,
 
   formData: {
     name: "",
@@ -67,6 +68,40 @@ const useProductStore = create((set, get) => ({
       }
     } finally {
       set({ loading: false });
+    }
+  },
+
+  fetchProduct: async (id) => {
+    set({ loading: true });
+    try {
+      const response = await axios.get(`${BASE_URL}/api_v1/products/${id}`);
+      set({
+        currentProduct: response.data.data,
+        formData: response.data.data, //Prefill form with data
+        error: null,
+      });
+    } catch (error) {
+      console.log("Error while fetching product: ", error);
+      set({ error: error, currentProduct: null });
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  updateProduct: async (id) => {
+    set({ loading: true });
+    try {
+      const { formData } = get();
+      const response = await axios.put(
+        `${BASE_URL}/api_v1/products/${id}`,
+        formData,
+      );
+      set({ currentProduct: response.data.data });
+      toast.success("Product updated successfully!");
+    } catch (error) {
+      toast.error("Error while updating product: ", error);
+      console.log("Error while updating product: ", error);
+    } finally {
     }
   },
 
